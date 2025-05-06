@@ -29,7 +29,7 @@ A simple **Command Line Interface (CLI)** application to manage your to-do list 
 
 ## 📦 Libraries Used
 
-- 🧰 **Yargs** – for command line parsing
+- 🧰 **[Yargs](https://www.npmjs.com/package/yargs)** – for command line parsing
 
 ---
 
