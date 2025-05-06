@@ -10,10 +10,10 @@
 - [x] task-cli mark-done `id` 
 
 <!-- Listing all tasks -->
-- [x] task-cli list
+- [] task-cli list
   
 <!-- Listing tasks by status -->
-- [ ] task-cli list done
-- [ ] task-cli list todo
-- [ ] task-cli list in-progress
+- [] task-cli list done
+- [] task-cli list todo
+- [] task-cli list in-progress
 
