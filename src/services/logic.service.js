@@ -15,11 +15,11 @@ export class LogicService {
       .scriptName("task-cli")
       .usage('$0 <cmd> [args]')
       .command(CREATE.command, CREATE.description, (yargs) => {
-        yargs.positional('name', {
+        yargs.positional('description', {
           type: 'string',
-          describe: 'the task name'
+          describe: 'the task description'
         })
-      }, (argv) => { this.taskService.create({ name: argv.name, status: STATUS_TYPE.TODO }) })
+      }, (argv) => { this.taskService.create({ description: argv.description, status: STATUS_TYPE.TODO }) })
       .command(LIST_ALL.command, LIST_ALL.description,
         (argv) => console.log(this.taskService.findAll({ status: argv.status })))
       .command(LIST_BY_STATUS.command, LIST_BY_STATUS.description, (yargs) => {
@@ -40,12 +40,12 @@ export class LogicService {
             type: 'int',
             describe: 'the task id',
           })
-          .positional('name', {
+          .positional('description', {
             type: 'string',
-            describe: 'the task name'
+            describe: 'the task description'
           })
 
-      }, ({ id, name }) => this.taskService.update({ id, name }))
+      }, ({ id, description }) => this.taskService.update({ id, description }))
       .command(MARK_IN_PROGRESS.command, MARK_IN_PROGRESS.description, (yargs) => {
         yargs
           .positional('id', {

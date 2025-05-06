@@ -1,16 +1,19 @@
 import { SaveFileUseCase } from "../use-cases/save-file.use-case.js"
 import { ReadFileUseCase } from "../use-cases/read-file.use-case.js"
+
 import { STATUS_TYPE } from '../consts.js'
 
 const fileName = 'tasks.json'
 
 export class TaskService {
-  create({ name, status }) {
+  create({ description, status }) {
 
     const tasksFound = this.findAll({})
     const taskId = tasksFound.length + 1
 
-    const newTask = { id: taskId, name, status }
+    const createdAt = new Date()
+
+    const newTask = { id: taskId, description, status, createdAt }
 
     tasksFound.push(newTask)
 
@@ -46,7 +49,7 @@ export class TaskService {
     console.log(`Task with id ${taskId} has been deleted`)
   }
 
-  update({ id: taskId, name, status }) {
+  update({ id: taskId, description, status }) {
 
     this.findOneById(taskId)
 
@@ -54,15 +57,15 @@ export class TaskService {
 
     if (status) this.validateStatusType(status)
 
-    const tasks = tasksFound.map((task) => {
-      if (task.id !== taskId) return task
+    const taskToUpdateIndex = tasksFound.findIndex(task => task.id === taskId)
 
-      return {
-        ...task,
-        name: name ?? task.name,
-        status: status ?? task.status
-      }
-    })
+    const updatedAt = new Date()
+
+    const tasks = [
+      ...tasksFound.slice(0, taskToUpdateIndex),
+      { ...tasksFound[taskToUpdateIndex], description, updatedAt, status },
+      ...tasksFound.slice(taskToUpdateIndex + 1)
+    ]
 
     SaveFileUseCase.execute({ fileContent: JSON.stringify(tasks), fileName })
 
@@ -74,7 +77,7 @@ export class TaskService {
 
     const task = tasksFound.find(({ id }) => id === taskId)
 
-    if (!task) throw Error(`Task with id ${taskID} not found`)
+    if (!task) throw Error(`Task with id ${taskId} not found`)
 
     return task
   }
