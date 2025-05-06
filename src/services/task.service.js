@@ -1,15 +1,16 @@
 import { SaveFileUseCase } from "../use-cases/save-file.use-case.js"
 import { ReadFileUseCase } from "../use-cases/read-file.use-case.js"
+import { STATUS_TYPE } from '../consts.js'
 
 const fileName = 'tasks.json'
 
 export class TaskService {
-  static create(name) {
+  create({ name, status }) {
 
-    const tasksFound = this.findAll()
+    const tasksFound = this.findAll({})
     const taskId = tasksFound.length + 1
 
-    const newTask = { id: taskId, name, status: 'todo' }
+    const newTask = { id: taskId, name, status }
 
     tasksFound.push(newTask)
 
@@ -21,28 +22,37 @@ export class TaskService {
     console.log('Task added successfully')
   }
 
-  static findAll() {
+  findAll({ status }) {
     const tasks = ReadFileUseCase.execute({ fileName: 'tasks.json' })
-    return tasks
+
+    if (!status) return tasks
+
+    this.validateStatusType(status)
+
+    const tasksFound = tasks.filter(({ status: statusTask }) => statusTask === status)
+
+    return tasksFound
   }
 
-  static delete(taskId) {
+  delete(taskId) {
 
     this.findOneById(taskId)
 
-    const tasksFound = this.findAll()
+    const tasksFound = this.findAll({})
     const tasks = tasksFound.filter(({ id }) => id !== taskId)
 
-    SaveFileUseCase.execute({ fileContent: JSON.stringify(tasks), fileName})
+    SaveFileUseCase.execute({ fileContent: JSON.stringify(tasks), fileName })
 
     console.log(`Task with id ${taskId} has been deleted`)
   }
 
-  static update({ id: taskId, name }) {
+  update({ id: taskId, name, status }) {
 
     this.findOneById(taskId)
 
-    const tasksFound = this.findAll()
+    const tasksFound = this.findAll({})
+
+    if (status) this.validateStatusType(status)
 
     const tasks = tasksFound.map((task) => {
       if (task.id !== taskId) return task
@@ -50,6 +60,7 @@ export class TaskService {
       return {
         ...task,
         name: name ?? task.name,
+        status: status ?? task.status
       }
     })
 
@@ -58,7 +69,7 @@ export class TaskService {
     console.log(`Task with id ${taskId} has been updated`)
   }
 
-  static findOneById(taskId) {
+  findOneById(taskId) {
     const tasksFound = ReadFileUseCase.execute({ fileName })
 
     const task = tasksFound.find(({ id }) => id === taskId)
@@ -66,5 +77,12 @@ export class TaskService {
     if (!task) throw Error(`Task with id ${taskID} not found`)
 
     return task
+  }
+
+  validateStatusType(status) {
+
+    if (!status) throw Error('You must pass the status value')
+
+    if (!STATUS_TYPE[status]) throw new Error(`Status must be one of this values ${Object.values(STATUS_TYPE)}`)
   }
 }
