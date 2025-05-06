@@ -1,0 +1,5 @@
+export const STATUS_TYPE = {
+  IN_PROGRESS: 'IN_PROGRESS',
+  TODO: 'TODO',
+  DONE: 'DONE'
+}
