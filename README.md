@@ -50,6 +50,6 @@ Inspired by: [Task Tracker Project on roadmap.sh](https://roadmap.sh/projects/ta
 1. Clone this repository:
    ```bash
    git clone https://github.com/isakiDev/task-tracker
-   cd task-tracker-cli
+   cd task-tracker
 2. Run CLI
     ```npm run dev <command>```
