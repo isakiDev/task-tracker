@@ -27,7 +27,7 @@ A simple **Command Line Interface (CLI)** application to manage your to-do list 
 
 ---
 
-## 📦 Libraries Used
+## 📦 Libraries
 
 - 🧰 **[Yargs](https://www.npmjs.com/package/yargs)** – for command line parsing
 
