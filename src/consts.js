@@ -5,6 +5,8 @@ export const STATUS_TYPE = {
 }
 
 export const LOGIC_TEXT_COMMANDS = {
+  CREATE: { command: 'add [name]', description: 'Create a new task' },
+  LIST_ALL: { command: 'list', description: 'List all tasks' },
   LIST_BY_STATUS: { command: 'list [status]', description: 'List tasks by status' },
   DELETE: { command: 'delete [id]', description: 'Delete task with id' },
   UPDATE: { command: 'update [id] [name]', description: 'Update task with id' },
