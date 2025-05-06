@@ -1,19 +1,55 @@
-<!-- Adding a new task -->
-- [x] task-cli add `name`
+# 📝 Task Tracker CLI
 
-<!-- Updating and deleting tasks -->
-- [x] task-cli update `id` `name`
-- [x] task-cli delete `id`
-  
-<!-- Marking a task as in progress or done -->
-- [x] task-cli mark-in-progress `id` 
-- [x] task-cli mark-done `id` 
+A simple **Command Line Interface (CLI)** application to manage your to-do list and efficiently track tasks using a local JSON file for storage.
 
-<!-- Listing all tasks -->
-- [] task-cli list
-  
-<!-- Listing tasks by status -->
-- [] task-cli list done
-- [] task-cli list todo
-- [] task-cli list in-progress
+---
 
+## ✨ Features
+
+- ➕ Add, ✏️ update, and 🗑️ delete tasks  
+- ✅ Mark tasks as **todo**, **in-progress**, or **done**  
+- 📋 List all tasks or filter them by status  
+- 💾 Stores tasks locally in a JSON file  
+
+---
+
+## 💻 Supported Commands
+
+| Command                 | Description                      |
+| ----------------------- | -------------------------------- |
+| `add [name]`            | ➕ Create a new task              |
+| `list`                  | 📋 List all tasks                 |
+| `list [status]`         | 🔍 List tasks filtered by status  |
+| `delete [id]`           | 🗑️ Delete task by ID              |
+| `update [id] [name]`    | ✏️ Update task name by ID         |
+| `mark-in-progress [id]` | 🚧 Mark task as in progress by ID |
+| `mark-done [id]`        | ✅ Mark task as done by ID        |
+
+---
+
+## 📦 Libraries Used
+
+- 🧰 **Yargs** – for command line parsing
+
+---
+
+## 💡 Tips
+
+- Use `npm run dev -- --help` to see all available commands
+
+---
+
+## 🚀 Getting Started
+
+### 🧠 Idea
+
+Inspired by: [Task Tracker Project on roadmap.sh](https://roadmap.sh/projects/task-tracker)
+
+### 🛠️ Installation
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/isakiDev/task-tracker
+   cd task-tracker-cli
+2. Run CLI
+    ```npm run dev <command>```
