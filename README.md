@@ -6,8 +6,8 @@
 - [x] task-cli delete `id`
   
 <!-- Marking a task as in progress or done -->
-- [ ] task-cli mark-in-progress `id` 
-- [ ] task-cli mark-done `id` 
+- [x] task-cli mark-in-progress `id` 
+- [x] task-cli mark-done `id` 
 
 <!-- Listing all tasks -->
 - [x] task-cli list
