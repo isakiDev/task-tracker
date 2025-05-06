@@ -19,7 +19,7 @@ A simple **Command Line Interface (CLI)** application to manage your to-do list 
 | ----------------------- | -------------------------------- |
 | `add [name]`            | ➕ Create a new task              |
 | `list`                  | 📋 List all tasks                 |
-| `list [status]`         | 🔍 List tasks filtered by status (TODO - IN_PROGRESS - DONE)  |
+| `list [status]`         | 🔍 List tasks filtered by status (TODO - IN_PROGRESS - DONE) |
 | `delete [id]`           | 🗑️ Delete task by ID              |
 | `update [id] [name]`    | ✏️ Update task name by ID         |
 | `mark-in-progress [id]` | 🚧 Mark task as in progress by ID |
