@@ -7,7 +7,6 @@ import { ReadFileUseCase } from '../../../src/use-cases/read-file.use-case.js'
 import { tasks } from '../../mock/tasks.mock.js'
 import { fileDestination, fileName } from '../../mock/file-information.mock.js'
 
-
 afterEach(() => {
   jest.clearAllMocks()
 })
