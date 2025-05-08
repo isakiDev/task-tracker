@@ -6,7 +6,11 @@ export class SaveFileUseCase {
     fileDestination = 'outputs',
     fileName
   }) {
-    fs.mkdirSync(fileDestination, { recursive: true })
-    fs.writeFileSync(`${fileDestination}/${fileName}`, fileContent)
+    try {
+      fs.mkdirSync(fileDestination, { recursive: true })
+      fs.writeFileSync(`${fileDestination}/${fileName}`, fileContent)
+    } catch (error) {
+      throw error
+    }
   }
 }
