@@ -1,0 +1,1 @@
+export const { fileDestination, fileName } = { fileName: 'task.json', fileDestination: 'src/outputs' }
