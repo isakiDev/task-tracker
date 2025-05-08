@@ -30,12 +30,13 @@ A simple **Command Line Interface (CLI)** application to manage your to-do list 
 ## 📦 Libraries
 
 - 🧰 **[Yargs](https://www.npmjs.com/package/yargs)** – for command line parsing
-
+- 🐞 **[Jest](https://www.npmjs.com/package/jest)** - for testing
 ---
 
 ## 💡 Tips
 
 - Use `npm run dev -- --help` to see all available commands
+- Run test `npm run test`
 
 ---
 
