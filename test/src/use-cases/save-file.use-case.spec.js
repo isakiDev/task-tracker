@@ -14,8 +14,8 @@ afterEach(() => {
 describe('SaveFileUseCase', () => {
   describe('execute', () => {
     test('should save file', () => {
-      jest.spyOn(fs, 'mkdirSync').mockImplementation(() => undefined)
-      jest.spyOn(fs, 'writeFileSync').mockImplementation(() => undefined)
+      jest.spyOn(fs, 'mkdirSync').mockReturnValue()
+      jest.spyOn(fs, 'writeFileSync').mockReturnValue()
 
       const result = SaveFileUseCase.execute({ fileContent, fileDestination, fileName })
 
@@ -25,7 +25,7 @@ describe('SaveFileUseCase', () => {
     })
   
     test('should return an error', () => {
-      jest.spyOn(fs, 'mkdirSync').mockImplementation(() => undefined)
+      jest.spyOn(fs, 'mkdirSync').mockReturnValue()
       jest.spyOn(fs, 'writeFileSync').mockImplementation(() => { throw new Error() })
 
       expect(() => {

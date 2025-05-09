@@ -14,7 +14,7 @@ afterEach(() => {
 describe('ReadFileUseCase', () => {
   describe('execute', () => {
     test('should read file content', () => {
-      jest.spyOn(fs, 'readFileSync').mockImplementation(() => JSON.stringify(tasks))
+      jest.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(tasks))
 
       const result = ReadFileUseCase.execute({ fileName, fileDestination })
 
