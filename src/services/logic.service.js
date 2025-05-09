@@ -24,13 +24,19 @@ export class LogicService {
         console.log(msg)
       })
       .command(LIST_ALL.command, LIST_ALL.description,
-        (argv) => console.log(this.taskService.findAll({ status: argv.status })))
+        (argv) => {
+          const { data } = this.taskService.findAll({ status: argv.status })
+          console.table(data)
+        })
       .command(LIST_BY_STATUS.command, LIST_BY_STATUS.description, (yargs) => {
         yargs.positional('status', {
           type: 'string',
           describe: 'the status task'
         })
-      }, (argv) => console.log(this.taskService.findAll({ status: argv.status })))
+      }, (argv) => {
+        const { data } = this.taskService.findAll({ status: argv.status })
+        console.table(data)
+      })
       .command(DELETE.command, DELETE.description, (yargs) => {
         yargs.positional('id', {
           type: 'int',
@@ -61,14 +67,20 @@ export class LogicService {
             type: 'int',
             describe: 'the task id',
           })
-      }, ({ id }) => this.taskService.update({ id, status: STATUS_TYPE.IN_PROGRESS }))
+      }, ({ id }) => {
+        const { msg } = this.taskService.update({ id, status: STATUS_TYPE.IN_PROGRESS })
+        console.log(msg)
+      })
       .command(MARK_DONE.command, MARK_DONE.description, (yargs) => {
         yargs
           .positional('id', {
             type: 'int',
             describe: 'the task id',
           })
-      }, ({ id }) => this.taskService.update({ id, status: STATUS_TYPE.DONE }))
+      }, ({ id }) => {
+        const { msg } = this.taskService.update({ id, status: STATUS_TYPE.DONE })
+        console.log(msg)
+      })
       .help()
       .parse(hideBin(process.argv))
   }
