@@ -36,7 +36,7 @@ A simple **Command Line Interface (CLI)** application to manage your to-do list 
 ## 💡 Tips
 
 - Use `npm run dev -- --help` to see all available commands
-- Run test `npm run test`
+- Run tests `npm run test`
 
 ---
 
