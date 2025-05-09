@@ -37,15 +37,17 @@ export class TaskService {
 
       if (!status) return { data: tasks }
 
-      this.validateStatusType(status)
+      const statusToUpper = status.toUpperCase()
 
-      const tasksFound = tasks.filter(({ status: statusTask }) => statusTask === status)
+      this.validateStatusType(statusToUpper)
+
+      const tasksFound = tasks.filter(({ status: statusTask }) => statusTask === statusToUpper)
 
       return {
         data: tasksFound
       }
     } catch (error) {
-      throw new Error('Tasks were not found')
+      throw new Error(error.message)
     }
   }
 
