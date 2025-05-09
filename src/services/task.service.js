@@ -8,7 +8,7 @@ const fileName = 'tasks.json'
 export class TaskService {
   create({ description, status }) {
     try {
-      const tasksFound = this.findAll({})
+      const { data: tasksFound } = this.findAll({})
       const taskId = tasksFound.length + 1
 
       const createdAt = new Date()
@@ -35,7 +35,7 @@ export class TaskService {
     try {
       const tasks = ReadFileUseCase.execute({ fileName: 'tasks.json' })
 
-      if (!status) return tasks
+      if (!status) return { data: tasks }
 
       this.validateStatusType(status)
 
@@ -53,7 +53,7 @@ export class TaskService {
     try {
       this.findOneById(taskId)
 
-      const tasksFound = this.findAll({})
+      const { data: tasksFound } = this.findAll({})
       const tasks = tasksFound.filter(({ id }) => id !== taskId)
 
       SaveFileUseCase.execute({ fileContent: JSON.stringify(tasks), fileName })
@@ -71,7 +71,7 @@ export class TaskService {
     try {
       this.findOneById(taskId)
 
-      const tasksFound = this.findAll({})
+      const { data: tasksFound } = this.findAll({})
 
       if (status) this.validateStatusType(status)
 
@@ -79,9 +79,11 @@ export class TaskService {
 
       const updatedAt = new Date()
 
+      const task = tasksFound[taskToUpdateIndex]
+
       const tasks = [
         ...tasksFound.slice(0, taskToUpdateIndex),
-        { ...tasksFound[taskToUpdateIndex], description, updatedAt, status },
+        { ...task, description: description ?? task.description, updatedAt, status: status ?? task.status },
         ...tasksFound.slice(taskToUpdateIndex + 1)
       ]
 
