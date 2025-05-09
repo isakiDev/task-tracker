@@ -19,7 +19,10 @@ export class LogicService {
           type: 'string',
           describe: 'the task description'
         })
-      }, (argv) => { this.taskService.create({ description: argv.description, status: STATUS_TYPE.TODO }) })
+      }, (argv) => {
+        const { msg } = this.taskService.create({ description: argv.description, status: STATUS_TYPE.TODO })
+        console.log(msg)
+      })
       .command(LIST_ALL.command, LIST_ALL.description,
         (argv) => console.log(this.taskService.findAll({ status: argv.status })))
       .command(LIST_BY_STATUS.command, LIST_BY_STATUS.description, (yargs) => {

@@ -7,22 +7,28 @@ const fileName = 'tasks.json'
 
 export class TaskService {
   create({ description, status }) {
+    try {
+      const tasksFound = this.findAll({})
+      const taskId = tasksFound.length + 1
 
-    const tasksFound = this.findAll({})
-    const taskId = tasksFound.length + 1
+      const createdAt = new Date()
 
-    const createdAt = new Date()
+      const newTask = { id: taskId, description, status, createdAt }
 
-    const newTask = { id: taskId, description, status, createdAt }
+      tasksFound.push(newTask)
 
-    tasksFound.push(newTask)
+      SaveFileUseCase.execute({
+        fileContent: JSON.stringify(tasksFound),
+        fileName: 'tasks.json'
+      })
 
-    SaveFileUseCase.execute({
-      fileContent: JSON.stringify(tasksFound),
-      fileName: 'tasks.json'
-    })
-
-    console.log('Task added successfully')
+      return {
+        msg: 'Task added successfully',
+        data: newTask
+      }
+    } catch (error) {
+      throw new Error(error.message)
+    }
   }
 
   findAll({ status }) {
