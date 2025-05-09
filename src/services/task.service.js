@@ -32,60 +32,84 @@ export class TaskService {
   }
 
   findAll({ status }) {
-    const tasks = ReadFileUseCase.execute({ fileName: 'tasks.json' })
+    try {
+      const tasks = ReadFileUseCase.execute({ fileName: 'tasks.json' })
 
-    if (!status) return tasks
+      if (!status) return tasks
 
-    this.validateStatusType(status)
+      this.validateStatusType(status)
 
-    const tasksFound = tasks.filter(({ status: statusTask }) => statusTask === status)
+      const tasksFound = tasks.filter(({ status: statusTask }) => statusTask === status)
 
-    return tasksFound
+      return {
+        data: tasksFound
+      }
+    } catch (error) {
+      throw new Error('Tasks were not found')
+    }
   }
 
   delete(taskId) {
+    try {
+      this.findOneById(taskId)
 
-    this.findOneById(taskId)
+      const tasksFound = this.findAll({})
+      const tasks = tasksFound.filter(({ id }) => id !== taskId)
 
-    const tasksFound = this.findAll({})
-    const tasks = tasksFound.filter(({ id }) => id !== taskId)
+      SaveFileUseCase.execute({ fileContent: JSON.stringify(tasks), fileName })
 
-    SaveFileUseCase.execute({ fileContent: JSON.stringify(tasks), fileName })
-
-    console.log(`Task with id ${taskId} has been deleted`)
+      return {
+        msg: `Task with id ${taskId} has been deleted`,
+        data: tasks
+      }
+    } catch (error) {
+      throw new Error(`Task with id ${taskId} was not deleted`)
+    }
   }
 
   update({ id: taskId, description, status }) {
+    try {
+      this.findOneById(taskId)
 
-    this.findOneById(taskId)
+      const tasksFound = this.findAll({})
 
-    const tasksFound = this.findAll({})
+      if (status) this.validateStatusType(status)
 
-    if (status) this.validateStatusType(status)
+      const taskToUpdateIndex = tasksFound.findIndex(task => task.id === taskId)
 
-    const taskToUpdateIndex = tasksFound.findIndex(task => task.id === taskId)
+      const updatedAt = new Date()
 
-    const updatedAt = new Date()
+      const tasks = [
+        ...tasksFound.slice(0, taskToUpdateIndex),
+        { ...tasksFound[taskToUpdateIndex], description, updatedAt, status },
+        ...tasksFound.slice(taskToUpdateIndex + 1)
+      ]
 
-    const tasks = [
-      ...tasksFound.slice(0, taskToUpdateIndex),
-      { ...tasksFound[taskToUpdateIndex], description, updatedAt, status },
-      ...tasksFound.slice(taskToUpdateIndex + 1)
-    ]
+      SaveFileUseCase.execute({ fileContent: JSON.stringify(tasks), fileName })
 
-    SaveFileUseCase.execute({ fileContent: JSON.stringify(tasks), fileName })
-
-    console.log(`Task with id ${taskId} has been updated`)
+      return {
+        msg: `Task with id ${taskId} has been updated`,
+        data: tasks[taskToUpdateIndex]
+      }
+    } catch (error) {
+      throw new Error(`Task with id ${taskId} was not updated`)
+    }
   }
 
   findOneById(taskId) {
-    const tasksFound = ReadFileUseCase.execute({ fileName })
+    try {
+      const tasksFound = ReadFileUseCase.execute({ fileName })
 
-    const task = tasksFound.find(({ id }) => id === taskId)
+      const task = tasksFound.find(({ id }) => id === taskId)
 
-    if (!task) throw Error(`Task with id ${taskId} not found`)
+      if (!task) throw Error(`Task with id ${taskId} was not found`)
 
-    return task
+      return {
+        data: task
+      }
+    } catch (error) {
+      throw new Error(`Task with id ${taskId} was not found`)
+    }
   }
 
   validateStatusType(status) {

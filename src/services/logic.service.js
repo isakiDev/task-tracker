@@ -36,7 +36,10 @@ export class LogicService {
           type: 'int',
           describe: 'the task id'
         })
-      }, (argv) => this.taskService.delete(argv.id))
+      }, (argv) => {
+        const { msg } = this.taskService.delete(argv.id)
+        console.log(msg)
+      })
       .command(UPDATE.command, UPDATE.description, (yargs) => {
         yargs
           .positional('id', {
@@ -48,7 +51,10 @@ export class LogicService {
             describe: 'the task description'
           })
 
-      }, ({ id, description }) => this.taskService.update({ id, description }))
+      }, ({ id, description }) => {
+        const { msg } = this.taskService.update({ id, description })
+        console.log(msg)
+      })
       .command(MARK_IN_PROGRESS.command, MARK_IN_PROGRESS.description, (yargs) => {
         yargs
           .positional('id', {
