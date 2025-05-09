@@ -12,35 +12,37 @@ afterEach(() => {
 })
 
 describe('ReadFileUseCase', () => {
-  test('should read file content', () => {
-    jest.spyOn(fs, 'readFileSync').mockImplementation(() => JSON.stringify(tasks))
+  describe('execute', () => {
+    test('should read file content', () => {
+      jest.spyOn(fs, 'readFileSync').mockImplementation(() => JSON.stringify(tasks))
 
-    const result = ReadFileUseCase.execute({ fileName, fileDestination })
+      const result = ReadFileUseCase.execute({ fileName, fileDestination })
 
-    expect(fs.readFileSync).toHaveBeenCalledWith('src/outputs/task.json', 'utf8')
-    expect(result).toEqual(tasks)
-  });
+      expect(fs.readFileSync).toHaveBeenCalledWith('src/outputs/task.json', 'utf8')
+      expect(result).toEqual(tasks)
+    });
 
-  test('should return empty array if file does not exist (ENOENT)', () => {
-    const error = new Error('File not found')
-    error.code = 'ENOENT'
+    test('should return empty array if file does not exist (ENOENT)', () => {
+      const error = new Error('File not found')
+      error.code = 'ENOENT'
 
-    jest.spyOn(fs, 'readFileSync').mockImplementation(() => { throw error })
+      jest.spyOn(fs, 'readFileSync').mockImplementation(() => { throw error })
 
-    const result = ReadFileUseCase.execute({ fileName, fileDestination })
+      const result = ReadFileUseCase.execute({ fileName, fileDestination })
 
-    expect(fs.readFileSync).toHaveBeenCalledWith('src/outputs/task.json', 'utf8')
-    expect(result).toEqual([])
-  });
+      expect(fs.readFileSync).toHaveBeenCalledWith('src/outputs/task.json', 'utf8')
+      expect(result).toEqual([])
+    });
 
-  test('should return the error object for unknow errors', () => {
-    const error = new Error('Unknown error')
+    test('should return the error object for unknow errors', () => {
+      const error = new Error('Unknown error')
 
-    jest.spyOn(fs, 'readFileSync').mockImplementation(() => { throw error })
+      jest.spyOn(fs, 'readFileSync').mockImplementation(() => { throw error })
 
-    const result = ReadFileUseCase.execute({ fileName, fileDestination })
+      const result = ReadFileUseCase.execute({ fileName, fileDestination })
 
-    expect(fs.readFileSync).toHaveBeenCalledWith(`${fileDestination}/${fileName}`, 'utf8')
-    expect(result).toEqual(error)
-  });
+      expect(fs.readFileSync).toHaveBeenCalledWith(`${fileDestination}/${fileName}`, 'utf8')
+      expect(result).toEqual(error)
+    });
+  })
 });
