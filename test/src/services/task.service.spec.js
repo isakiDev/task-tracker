@@ -73,11 +73,11 @@ describe('TaskService', () => {
     })
 
     test('should return an error', () => {
-      jest.spyOn(ReadFileUseCase, 'execute').mockImplementation(() => { throw new Error() })
+      jest.spyOn(ReadFileUseCase, 'execute').mockImplementation(() => { throw new Error('Unknow error') })
 
       expect(() => {
         taskService.findAll({ status: STATUS_TYPE.IN_PROGRESS })
-      }).toThrow('Tasks were not found')
+      }).toThrow('Unknow error')
 
     })
   })
