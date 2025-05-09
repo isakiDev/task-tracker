@@ -30,7 +30,7 @@ describe('SaveFileUseCase', () => {
 
       expect(() => {
         SaveFileUseCase.execute({ fileContent, fileDestination, fileName })
-      }).toThrow('Cannot save file')
+      }).toThrow('The file was not saved')
 
       expect(fs.mkdirSync).toHaveBeenCalledWith(fileDestination, { recursive: true })
       expect(fs.writeFileSync).toHaveBeenCalledWith(`${fileDestination}/${fileName}`, fileContent)

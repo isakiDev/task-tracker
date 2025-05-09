@@ -21,31 +21,27 @@ afterEach(() => {
 describe('TaskService', () => {
   describe('create', () => {
     test('should create a new task', () => {
-      jest.spyOn(taskService, 'findAll').mockReturnValue([])
+      jest.spyOn(taskService, 'findAll').mockReturnValue({ data: [] })
       jest.spyOn(SaveFileUseCase, 'execute').mockReturnValue()
 
-      const result = taskService.create({ description, status })
+      const { data, msg } = taskService.create({ description, status })
 
-      expect(result).toEqual(
-        {
-          msg: 'Task added successfully',
-          data: {
-            id: expect.any(Number),
-            description: expect.any(String),
-            status: STATUS_TYPE.TODO,
-            createdAt: expect.any(Date)
-          }
-        }
-      )
+      expect(msg).toBe('Task added successfully')
+      expect(data).toEqual({
+        id: expect.any(Number),
+        description,
+        status,
+        createdAt: expect.any(Date)
+      })
     })
 
     test('should return an error', () => {
-      jest.spyOn(taskService, 'findAll').mockReturnValue([])
-      jest.spyOn(SaveFileUseCase, 'execute').mockImplementation(() => { throw Error('Cannot save file') })
+      jest.spyOn(taskService, 'findAll').mockReturnValue({ data: [] })
+      jest.spyOn(SaveFileUseCase, 'execute').mockImplementation(() => { throw Error('The file was not saved') })
 
       expect(() => {
         taskService.create({ description, status })
-      }).toThrow('Cannot save file')
+      }).toThrow('The file was not saved')
     })
   })
 
@@ -53,9 +49,9 @@ describe('TaskService', () => {
     test('should return tasks list', () => {
       jest.spyOn(ReadFileUseCase, 'execute').mockReturnValue(tasks)
 
-      const result = taskService.findAll({})
+      const { data } = taskService.findAll({})
 
-      expect(result).toEqual(tasks)
+      expect(data).toEqual(tasks)
     })
 
     test('should return filtered tasks by status', () => {
@@ -91,7 +87,7 @@ describe('TaskService', () => {
 
     test('should delete a task', () => {
       jest.spyOn(taskService, 'findOneById').mockReturnValue()
-      jest.spyOn(taskService, 'findAll').mockReturnValue(tasks)
+      jest.spyOn(taskService, 'findAll').mockReturnValue({ data: tasks })
       jest.spyOn(SaveFileUseCase, 'execute').mockReturnValue()
 
       const { data, msg } = taskService.delete(taskId)
@@ -123,7 +119,7 @@ describe('TaskService', () => {
 
     test('should update task', () => {
       jest.spyOn(taskService, 'findOneById').mockReturnValue(tasks[0])
-      jest.spyOn(taskService, 'findAll').mockReturnValue(tasks)
+      jest.spyOn(taskService, 'findAll').mockReturnValue({ data: tasks })
       jest.spyOn(taskService, 'validateStatusType').mockReturnValue()
       jest.spyOn(SaveFileUseCase, 'execute').mockReturnValue()
 
