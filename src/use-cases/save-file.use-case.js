@@ -10,7 +10,7 @@ export class SaveFileUseCase {
       fs.mkdirSync(fileDestination, { recursive: true })
       fs.writeFileSync(`${fileDestination}/${fileName}`, fileContent)
     } catch (error) {
-      throw new Error('Cannot save file')
+      throw new Error('The file was not saved')
     }
   }
 }
